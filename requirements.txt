@@ -1,0 +1,8 @@
+streamlit
+google-genai
+pandas
+openpyxl
+pillow
+pydantic
+pymupdf
+python-dotenv
