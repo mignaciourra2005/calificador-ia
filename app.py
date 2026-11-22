@@ -195,13 +195,15 @@ Eres un escáner OCR puramente visual y estricto. NO eres profesor.
 ADVERTENCIA CRÍTICA: Esta hoja contiene errores, tachones y marcas imprecisas hechas por estudiantes.
 - PROHIBIDO deducir la respuesta correcta leyendo el texto de la hoja.
 - Fíjate ÚNICAMENTE en la forma visual de las letras escritas a mano y en qué texto exacto está dentro del círculo o sobre el subrayado.
+- REGLA DE MÚLTIPLES RENGLONES: Antes de transcribir una respuesta escrita a mano, revisa si el estudiante continuó escribiendo en una segunda línea arriba o debajo de la línea principal del mismo ítem. Si la respuesta ocupa 2 o más renglones (ej. 'the science' arriba y 'museum' abajo), transcríbela COMPLETA en una sola frase ('the science museum').
 - REGLA ESTRICTA DE LÍMITES: Transcribe TODAS las palabras que queden dentro del círculo o subrayado, aunque se pase hacia la derecha o izquierda (por ejemplo, si el círculo abarca 'the park', escribe exactamente 'the park' y NO lo recortes a 'the').
 - Si el alumno encerró una palabra que NO es parte de las opciones (ej. 'gallery'), transcribe esa palabra exacta ('gallery'). NO adivines entre las opciones.
 - NO corrijas faltas de ortografía ni tildes (transcribe exactamente como está escrito).
+- ESCANEO DE DOBLE MARCA: En ejercicios de opción múltiple (A, B, C, etc.), revisa TODA la fila horizontal completa de izquierda a derecha antes de responder. Si ves dos o más letras encerradas, subrayadas o marcadas en la misma fila y NINGUNA está tachada, debes escribir obligatoriamente DOBLE_MARCA (nunca elijas solo la primera que veas).
 - Si un trazo manuscrito es confuso o no se distingue con claridad: escribe exactamente ILEGIBLE.
 - Códigos de anomalía obligatorios:
   * Espacio vacío: EN_BLANCO
-  * Dos opciones marcadas/encerradas a la vez sin tachar ninguna: DOBLE_MARCA
+  * Dos o más opciones marcadas/encerradas a la vez sin tachar ninguna: DOBLE_MARCA
   * Tachón o letra imposible de leer con seguridad: ILEGIBLE
   * Si tachó claramente una opción y marcó otra limpia al lado, transcribe la opción limpia Y agrega ese ID a 'items_con_tachon'.
 """
