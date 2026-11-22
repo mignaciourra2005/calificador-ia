@@ -1,5 +1,6 @@
 import os
 import re
+import hmac
 import json
 import time
 import uuid
@@ -175,8 +176,11 @@ load_dotenv()
 
 def obtener_cliente():
     api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key and "GEMINI_API_KEY" in st.secrets:
-        api_key = st.secrets["GEMINI_API_KEY"]
+    if not api_key:
+        try:
+            api_key = st.secrets["GEMINI_API_KEY"]
+        except Exception:
+            api_key = None
     if not api_key:
         st.error("No se encontró GEMINI_API_KEY. Configúrala en .env (local) o en Secrets (Streamlit Cloud).")
         st.stop()
@@ -200,10 +204,10 @@ ADVERTENCIA CRÍTICA: Esta hoja contiene errores, tachones y marcas imprecisas h
 - NO corrijas faltas de ortografía ni tildes (transcribe exactamente como está escrito).
 - Si un trazo manuscrito es confuso o no se distingue con claridad: escribe exactamente ILEGIBLE.
 - Códigos de anomalía obligatorios:
-  * Espacio vacío: EN_BLANCO
-  * Dos opciones marcadas/encerradas a la vez sin tachar ninguna: DOBLE_MARCA
-  * Tachón o letra imposible de leer con seguridad: ILEGIBLE
-  * Si tachó claramente una opción y marcó otra limpia al lado, transcribe la opción limpia Y agrega ese ID a 'items_con_tachon'.
+  - Espacio vacío: EN_BLANCO
+  - Dos opciones marcadas/encerradas a la vez sin tachar ninguna: DOBLE_MARCA
+  - Tachón o letra imposible de leer con seguridad: ILEGIBLE
+  - Si tachó claramente una opción y marcó otra limpia al lado, transcribe la opción limpia Y agrega ese ID a 'items_con_tachon'.
 """
 
 TIPOS_EJERCICIO = ["elegir_palabra", "escribir_palabra", "encerrar_opcion"]
@@ -583,6 +587,42 @@ def generar_excel_bytes(resumen, errores, trans, enlaces=None, incluir_formulas=
             dar_formato_hoja(writer.sheets["Detalle_Errores"], "errores", enlaces)
         dar_formato_hoja(writer.sheets["Transcripcion_Completa"], "transcripcion", enlaces)
     return buf.getvalue()
+
+# ==========================================
+# CONTROL DE ACCESO CON CONTRASEÑA
+# ==========================================
+def verificar_acceso():
+    if st.session_state.get("autenticado", False):
+        return
+
+    clave_correcta = os.getenv("APP_PASSWORD")
+    if not clave_correcta:
+        try:
+            clave_correcta = st.secrets["APP_PASSWORD"]
+        except Exception:
+            clave_correcta = None
+
+    if not clave_correcta:
+        st.error("Falta configurar APP_PASSWORD en Secrets (Streamlit Cloud) o en .env (local).")
+        st.stop()
+
+    st.title("🔒 Acceso Privado")
+    st.caption("Ingresa la contraseña para usar el Calificador Automático.")
+
+    with st.form("login_form"):
+        clave_ingresada = st.text_input("Contraseña", type="password")
+        entrar = st.form_submit_button("Entrar", type="primary")
+
+    if entrar:
+        if hmac.compare_digest(clave_ingresada, clave_correcta):
+            st.session_state["autenticado"] = True
+            st.rerun()
+        else:
+            st.error("Contraseña incorrecta.")
+
+    st.stop()
+
+verificar_acceso()
 
 # ==========================================
 # INICIALIZAR ESTADO DE BLOQUES
