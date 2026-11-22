@@ -25,7 +25,7 @@ load_dotenv()
 st.set_page_config(
     page_title="Calificador Automático de Hojas de Trabajo",
     page_icon="📝",
-    layout="centered",
+    layout="wide",
 )
 
 MODELOS_RESPALDO = [
@@ -83,12 +83,6 @@ def aplicar_estilos():
 
         {bg_css}
 
-        /* Ancho cómodo centrado */
-        .block-container {{
-            max-width: 980px !important;
-            padding-top: 2rem !important;
-        }}
-
         html, body, [class*="css"], .stMarkdown, .stTextInput, .stSelectbox, .stNumberInput, button {{
             font-family: 'DM Sans', sans-serif !important;
         }}
@@ -98,23 +92,15 @@ def aplicar_estilos():
             font-weight: 700 !important;
         }}
 
-        p, label, .stMarkdown p, .stWidgetLabel p {{
-            font-size: 1.08rem !important;
-            font-weight: 700 !important;
+        p, label, .stMarkdown p {{
+            font-size: calc(1rem + 2px) !important;
+            font-weight: 500 !important;
         }}
 
-        /* Tarjetas blancas para los bloques de ejercicios */
-        [data-testid="stVerticalBlockBorderWrapper"] {{
-            background-color: rgba(255, 255, 255, 0.95) !important;
-            border-radius: 14px !important;
-            padding: 1.2rem !important;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10) !important;
-            border: none !important;
-        }}
-
-        /* Todos los botones en negro */
-        div.stButton > button,
-        div.stDownloadButton > button {{
+        /* Botones primarios negros */
+        div.stButton > button[kind="primary"],
+        div.stDownloadButton > button[kind="primary"],
+        div.stButton > button {{
             background-color: #111111 !important;
             color: #FFFFFF !important;
             border: 1px solid #111111 !important;
@@ -127,6 +113,15 @@ def aplicar_estilos():
             background-color: #333333 !important;
             border-color: #333333 !important;
             color: #FFFFFF !important;
+        }}
+
+        /* Tarjetas con fondo blanco semitransparente */
+        .bloque-card {{
+            background-color: rgba(255, 255, 255, 0.94);
+            padding: 1.2rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }}
         </style>
         """,
@@ -777,3 +772,6 @@ if st.button("🚀 Calificar Hojas", type="primary", use_container_width=True):
                     "📦 Descargar ZIP Completo (Consolidado + Individuales)",
                     data=zip_buf.getvalue(),
                     file_name=f"Reportes_{nombre_actividad}.zip",
+                    mime="application/zip",
+                    use_container_width=True,
+                )
